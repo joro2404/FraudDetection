@@ -29,7 +29,9 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "192.168.100.72",
     "192.168.100.76",
-    "192.168.100.78"
+    "192.168.100.78",
+    "192.168.100.36",
+    "192.168.100.63",    
 ]
 
 # Application definition
@@ -124,4 +126,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    '/var/www/static/',
+]

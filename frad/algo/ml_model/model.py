@@ -1,6 +1,6 @@
 import pickle
-from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
+import re
 
 __all__ = [
     'Model',
@@ -8,14 +8,35 @@ __all__ = [
 
 class Model(object):
     def __init__(self):
-        with open('./model.pickle', 'rb') as f:
+        with open('/Users/victor/Documents/FraudDetection/frad/algo/ml_model/model.pickle', 'rb') as f:
             self.estimator = pickle.load(f)
 
-        with open('./tfidf.pickle', 'rb') as f:
+        with open('/Users/victor/Documents/FraudDetection/frad/algo/ml_model/tfidf.pickle', 'rb') as f:
             self.tfidf = pickle.load(f)
 
     def predict(self, X):
         X = X.lower()
+        X = re.sub(r'\s{2,}', '', X)
+        X = X.replace('.', '')
+        X = X.replace(',', '')
+        X = X.replace('?', '')
+        X = X.replace('!', '')   
+        number  = re.findall(r'\$\d+', X)
+        number  = number[0][1:]
+        i = len(number)
+        res = ''
+
+        if i > 6:
+            number = number[0]
+            res = ' million '
+        else:
+            number = number[:3]
+            res = ' thousand '
+
+        X = re.sub(r'\$\d+', number + res + str('dollars'), X)
+
+        print(X)
+
         X = np.array([X], dtype='U')
         X_tf = self.tfidf.transform(X)
 
