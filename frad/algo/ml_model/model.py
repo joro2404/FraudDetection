@@ -21,12 +21,15 @@ class Model(object):
         X = X.replace(',', '')
         X = X.replace('?', '')
         X = X.replace('!', '')
+        X = X.replace("'ve", ' have')
+        X = X.replace("'re", ' are')
+        X = X.replace("'s", ' is')
 
-        numbers  = re.findall(r'\$\d+', X)
+        numbers = re.findall(r'\$\d+', X)
         if len(numbers) != 0:
-            n=1
+            n = 1
             for number in numbers:
-                number  = number[1:]
+                number = number[1:]
                 i = len(number)
                 res = ''
 
@@ -38,7 +41,7 @@ class Model(object):
                     res = ' thousand '
 
                 X = re.sub(r'\$\d+', number + res + str('dollars'), X, n)
-                n+=1
+                n += 1
 
         print(X)
 
