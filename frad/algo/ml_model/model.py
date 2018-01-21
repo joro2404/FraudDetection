@@ -20,20 +20,25 @@ class Model(object):
         X = X.replace('.', '')
         X = X.replace(',', '')
         X = X.replace('?', '')
-        X = X.replace('!', '')   
-        number  = re.findall(r'\$\d+', X)
-        number  = number[0][1:]
-        i = len(number)
-        res = ''
+        X = X.replace('!', '')
 
-        if i > 6:
-            number = number[0]
-            res = ' million '
-        else:
-            number = number[:3]
-            res = ' thousand '
+        numbers  = re.findall(r'\$\d+', X)
+        if len(numbers) != 0:
+            n=1
+            for number in numbers:
+                number  = number[1:]
+                i = len(number)
+                res = ''
 
-        X = re.sub(r'\$\d+', number + res + str('dollars'), X)
+                if i > 6:
+                    number = number[0]
+                    res = ' million '
+                else:
+                    number = number[:3]
+                    res = ' thousand '
+
+                X = re.sub(r'\$\d+', number + res + str('dollars'), X, n)
+                n+=1
 
         print(X)
 
